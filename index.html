@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#e97d98" />
+    <meta name="theme-color" content="#140f1f" />
     <meta name="description" content="15 anos da Samily" />
     <title>15 anos da Samily</title>
     <link rel="preconnect" href="https://script.google.com" />
@@ -20,22 +20,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Carregada sem bloquear a renderização: as fontes já usam display=swap. -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" /></noscript>
-    <link rel="stylesheet" href="style.css?v=3" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" /></noscript>
+    <link rel="stylesheet" href="style.css?v=4" />
   </head>
   <body>
     <a class="skip-link" href="#evento">Ir para o conteúdo</a>
     <header class="hero" id="inicio">
-      <div class="sparkles" aria-hidden="true">✦　♡　✧　★　♡　✦　✧</div>
+      <svg class="sprite" aria-hidden="true">
+        <symbol id="borboleta" viewBox="0 0 64 48">
+          <path d="M31 22C24 5 7 0 4 9c-3 10 12 15 27 15z" />
+          <path d="M31 26c-10 0-22 7-19 15 4 8 16-2 19-13z" opacity=".7" />
+          <path d="M33 22C40 5 57 0 60 9c3 10-12 15-27 15z" />
+          <path d="M33 26c10 0 22 7 19 15-4 8-16-2-19-13z" opacity=".7" />
+          <rect x="31" y="16" width="2" height="20" rx="1" fill="#f4eef1" />
+        </symbol>
+      </svg>
+      <div class="sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div>
       <div class="hero-content">
         <p class="eyebrow">Você é nosso convidado especial</p>
-        <h1>Samily<br /><em>15 anos</em></h1>
+        <h1>Samily<em>15 anos</em></h1>
         <p class="hero-copy">Uma data especial para celebrar essa nova fase.<br />Venha comemorar com a gente!</p>
       </div>
-      <div class="balloon balloon-one" aria-hidden="true"></div>
-      <div class="balloon balloon-two" aria-hidden="true"></div>
-      <div class="balloon balloon-three" aria-hidden="true"></div>
+      <svg class="butterfly butterfly-one" aria-hidden="true"><use href="#borboleta" /></svg>
+      <svg class="butterfly butterfly-two" aria-hidden="true"><use href="#borboleta" /></svg>
+      <svg class="butterfly butterfly-three" aria-hidden="true"><use href="#borboleta" /></svg>
     </header>
 
     <main>
@@ -92,6 +101,6 @@
 
     <footer>Feito com carinho para os 15 anos da Samily ♡</footer>
     <div class="celebration" id="celebration" aria-hidden="true"></div>
-    <script src="app.js?v=2"></script>
+    <script src="app.js?v=3"></script>
   </body>
 </html>

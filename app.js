@@ -21,7 +21,7 @@ function celebrate() {
     const y = dy * distance;
     particle.className = 'celebration-particle';
     particle.textContent = symbols[index % symbols.length];
-    particle.style.color = index % 2 ? '#e97d98' : '#f6b263';
+    particle.style.color = ['#ff6fae', '#b89cff', '#7fdcc8'][index % 3];
     particle.style.animationDelay = `${(Math.random() * .5).toFixed(2)}s`;
     particle.style.setProperty('--x', `${x}px`);
     particle.style.setProperty('--y', `${y}px`);
