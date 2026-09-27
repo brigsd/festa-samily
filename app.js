@@ -86,31 +86,37 @@ function formatDate(iso) {
   return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(iso));
 }
 
-function calendarUrl(event) {
-  const start = new Date(event.dataIso);
-  const end = new Date(start.getTime() + 4 * 60 * 60 * 1000);
-  const stamp = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.titulo)}&dates=${stamp(start)}/${stamp(end)}&location=${encodeURIComponent(event.endereco)}`;
-}
-
 function renderEvent(evento) {
   currentEvent = evento;
   $('#event-date').textContent = formatDate(evento.dataIso);
   $('#event-address').textContent = evento.endereco;
   $('#event-note').textContent = evento.observacoes;
-  $('#google-calendar').href = calendarUrl(evento);
+  $('#open-map').hidden = !evento.mapa;
+  if (evento.mapa) $('#open-map').href = evento.mapa;
 }
 
 function renderEventError() {
   ['#event-date', '#event-address', '#event-note'].forEach((selector) => { $(selector).textContent = 'Indisponível no momento'; });
 }
 
-$('#copy-address').addEventListener('click', async () => {
-  if (!currentEvent) return;
-  await navigator.clipboard.writeText(currentEvent.endereco);
-  $('#copy-address').textContent = 'Endereço copiado!';
-  setTimeout(() => { $('#copy-address').textContent = 'Copiar endereço'; }, 1800);
+async function copyText(button, text, copiedLabel) {
+  const label = button.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = copiedLabel;
+  } catch {
+    button.textContent = 'Não foi possível copiar';
+  }
+  setTimeout(() => { button.textContent = label; }, 1800);
+}
+
+$('#copy-address').addEventListener('click', () => {
+  if (currentEvent) copyText($('#copy-address'), currentEvent.endereco, 'Endereço copiado!');
 });
+
+document.querySelectorAll('[data-copy]').forEach((button) => button.addEventListener('click', () => {
+  copyText(button, button.dataset.copy, button.dataset.copied);
+}));
 
 async function loadEvent({ quiet = false } = {}) {
   if (!apiConfigured) {
@@ -127,25 +133,92 @@ async function loadEvent({ quiet = false } = {}) {
   }
 }
 
-document.querySelectorAll('input[name="resposta"]').forEach((input) => input.addEventListener('change', () => {
-  $('#party-size-label').hidden = document.querySelector('input[name="resposta"]:checked').value !== 'sim';
-}));
+const MAX_PESSOAS = 20;
+
+// Mostra um campo de nome para cada pessoa, preservando o que já foi digitado.
+function renderNameFields() {
+  const lista = $('#party-names-list');
+  const digitados = [...lista.querySelectorAll('input')].map((input) => input.value);
+  const total = Math.min(MAX_PESSOAS, Math.max(1, Math.floor(Number($('#party-size').value) || 1)));
+  lista.innerHTML = '';
+  for (let index = 0; index < total; index += 1) {
+    const label = document.createElement('label');
+    label.textContent = index === 0 ? 'Seu nome' : `Pessoa ${index + 1}`;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'nomes';
+    input.maxLength = 80;
+    input.autocomplete = index === 0 ? 'name' : 'off';
+    input.required = true;
+    input.value = digitados[index] || '';
+    label.appendChild(input);
+    lista.appendChild(label);
+  }
+}
+
+function toggleAttendance() {
+  const vai = document.querySelector('input[name="resposta"]:checked')?.value !== 'nao';
+  $('#party-size-label').hidden = !vai;
+  $('#party-names').hidden = !vai;
+  $('#party-names').disabled = !vai;
+}
+
+document.querySelectorAll('input[name="resposta"]').forEach((input) => input.addEventListener('change', toggleAttendance));
+$('#party-size').addEventListener('input', renderNameFields);
+renderNameFields();
 
 $('#rsvp-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const resposta = form.get('resposta');
-  const quantidade = resposta === 'sim' ? form.get('quantidade') : 0;
+  const nomes = resposta === 'sim' ? form.getAll('nomes').map((nome) => String(nome).trim()) : [];
+  const quantidade = nomes.length;
   const message = $('#rsvp-message');
   const button = $('#rsvp-submit');
+  if (nomes.some((nome) => !nome)) {
+    message.textContent = 'Informe o nome de cada pessoa.';
+    return;
+  }
   message.textContent = 'Enviando...';
   button.disabled = true;
   try {
     const saved = localStorage.getItem(rsvpKey);
-    const { token, mensagem } = await request('confirmarPresenca', { resposta, quantidade, token: saved || undefined });
+    const { token, mensagem } = await request('confirmarPresenca', { resposta, quantidade, nomes, token: saved || undefined });
     localStorage.setItem(rsvpKey, token);
     message.textContent = mensagem;
     if (resposta === 'sim') celebrate();
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// Aceita "50", "50,00", "1.250,50" e "R$ 80".
+function parseValor(texto) {
+  const limpo = String(texto).replace(/[R$\s]/g, '');
+  const milhar = /^\d{1,3}(\.\d{3})+$/.test(limpo);
+  const normalizado = limpo.includes(',') || milhar ? limpo.replace(/\./g, '').replace(',', '.') : limpo;
+  const valor = Number(normalizado);
+  return Number.isFinite(valor) ? Math.round(valor * 100) / 100 : NaN;
+}
+
+$('#gift-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const message = $('#gift-message');
+  const button = $('#gift-submit');
+  const valor = parseValor($('#gift-value').value);
+  if (!(valor > 0)) {
+    message.textContent = 'Informe um valor válido.';
+    return;
+  }
+  message.textContent = 'Enviando...';
+  button.disabled = true;
+  try {
+    const { mensagem } = await request('informarPresente', { valor });
+    message.textContent = mensagem;
+    $('#gift-value').value = '';
+    celebrate();
   } catch (error) {
     message.textContent = error.message;
   } finally {

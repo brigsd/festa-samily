@@ -22,7 +22,7 @@
     <!-- Carregada sem bloquear a renderização: as fontes já usam display=swap. -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" /></noscript>
-    <link rel="stylesheet" href="style.css?v=4" />
+    <link rel="stylesheet" href="style.css?v=5" />
   </head>
   <body>
     <a class="skip-link" href="#evento">Ir para o conteúdo</a>
@@ -74,7 +74,7 @@
         </div>
         <div class="event-actions">
           <button class="button button-soft" id="copy-address" type="button">Copiar endereço</button>
-          <a class="button button-soft" id="google-calendar" href="#" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
+          <a class="button button-soft" id="open-map" href="#" target="_blank" rel="noopener" hidden>Ver no mapa</a>
         </div>
       </section>
 
@@ -82,7 +82,6 @@
         <div class="section-heading">
           <p class="eyebrow">Vamos nos encontrar?</p>
           <h2>Confirmar presença</h2>
-          <p>Não precisamos de nome, telefone ou e-mail.</p>
         </div>
         <form class="rsvp-form" id="rsvp-form">
           <fieldset>
@@ -93,14 +92,43 @@
           <label class="party-size" id="party-size-label">Quantas pessoas irão, contando você?
             <input id="party-size" name="quantidade" type="number" min="1" max="20" value="1" inputmode="numeric" />
           </label>
+          <fieldset class="party-names" id="party-names">
+            <legend>Nome de cada pessoa</legend>
+            <div class="party-names-list" id="party-names-list"></div>
+          </fieldset>
           <button class="button button-primary" id="rsvp-submit" type="submit">Enviar resposta</button>
           <p class="form-message" id="rsvp-message" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="section card-section" id="presente">
+        <div class="section-heading">
+          <p class="eyebrow">Com carinho</p>
+          <h2>Presente</h2>
+          <p>Não é uma cobrança. Se quiser me presentear, este é o meu PIX. Só peço que informe o valor aqui embaixo, para eu conseguir controlar as movimentações da minha conta.</p>
+        </div>
+        <div class="pix">
+          <img class="pix-qrcode" src="assets/pix-qrcode.svg?v=1" alt="QR code do PIX" width="228" height="228" />
+          <div class="pix-details">
+            <p class="event-label">Chave PIX (CPF)</p>
+            <strong class="pix-key">052.676.910-62</strong>
+            <div class="pix-actions">
+              <button class="button button-soft" type="button" data-copy="05267691062" data-copied="Chave copiada!">Copiar chave</button>
+              <button class="button button-soft" type="button" data-copy="00020126330014br.gov.bcb.pix0111052676910625204000053039865802BR5906SAMILY6014CARLOS BARBOSA62070503***6304A90D" data-copied="Código copiado!">Copiar PIX copia e cola</button>
+            </div>
+          </div>
+        </div>
+        <form class="rsvp-form gift-form" id="gift-form">
+          <label class="party-size" for="gift-value">Qual o valor do presente?
+            <span class="money-input"><span aria-hidden="true">R$</span><input id="gift-value" name="valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" required /></span>
+          </label>
+          <button class="button button-primary" id="gift-submit" type="submit">Informar valor</button>
+          <p class="form-message" id="gift-message" aria-live="polite"></p>
         </form>
       </section>
     </main>
 
     <footer>Feito com carinho para os 15 anos da Samily ♡</footer>
     <div class="celebration" id="celebration" aria-hidden="true"></div>
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
   </body>
 </html>

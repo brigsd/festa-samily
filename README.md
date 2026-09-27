@@ -2,7 +2,7 @@
 
 [![Acessar](https://img.shields.io/badge/Acessar-E97D98?style=for-the-badge&logo=githubpages&logoColor=white)](https://brigsd.github.io/festa-samily/)
 
-Convite digital para a festa de 15 anos da Samily, com confirmação de presença sem criar conta ou fazer login.
+Convite digital para a festa de 15 anos da Samily, com confirmação de presença e presente via PIX, sem criar conta ou fazer login.
 
 ## Como funciona
 
@@ -11,25 +11,29 @@ Convidado → GitHub Pages → Google Apps Script → Google Sheets
 ```
 
 - **GitHub Pages:** publica o front-end estático deste repositório (`index.html`, `style.css` e `app.js`).
-- **Google Apps Script:** é a API pública usada pelo site. Ele entrega as informações da festa e grava as confirmações.
-- **Google Sheets:** funciona como banco de dados e painel de administração das informações da festa e das confirmações.
+- **Google Apps Script:** é a API pública usada pelo site. Ele entrega as informações da festa e grava as confirmações e os valores de presente.
+- **Google Sheets:** funciona como banco de dados e painel de administração das informações da festa, das confirmações e dos presentes.
 
 O endereço da API fica configurado em `index.html`, no bloco `<script>` do `<head>` (`window.FESTA_API`), que também dispara a busca dos dados antes do restante do carregamento. O código do Apps Script e a planilha não ficam neste repositório.
 
 ## Para os convidados
 
-O convidado abre o link do convite e pode confirmar ou recusar presença, informando somente a quantidade de pessoas.
+O convidado abre o link do convite e pode:
+
+- confirmar ou recusar presença, informando a quantidade de pessoas e o nome de cada uma;
+- presentear via PIX (QR code, chave ou copia e cola) e informar o valor enviado.
 
 Não há login. Depois de responder, o site guarda um token no navegador do convidado. Esse token permite atualizar a resposta pelo mesmo navegador, sem expor a edição da planilha.
 
 ## Planilha
 
-O Apps Script usa duas abas:
+O Apps Script usa três abas:
 
 | Aba | Finalidade |
 | --- | --- |
 | `Evento` | Informações da festa exibidas no convite. |
 | `Confirmacoes` | Registro das respostas de presença. |
+| `Presentes` | Registro dos valores de presente informados. |
 
 ### Aba `Evento`
 
@@ -37,14 +41,23 @@ Tem as colunas `chave` e `valor`, uma informação por linha:
 
 | Chave | Uso |
 | --- | --- |
-| `titulo` | Nome do evento usado no Google Agenda. |
+| `titulo` | Nome do evento. |
 | `data` | Data e horário da festa (célula no formato de data). |
-| `endereco` | Local exibido no convite e usado no botão de copiar e no Google Agenda. |
+| `endereco` | Local exibido no convite e usado no botão de copiar. |
+| `mapa` | Link do Google Maps usado no botão "Ver no mapa". Sem link, o botão fica oculto. |
 | `observacoes` | Texto livre para os convidados. |
 
 ### Aba `Confirmacoes`
 
-Preenchida pelo Apps Script com `token`, `resposta` (`sim` ou `nao`), `quantidade`, `criadoEm` e `atualizadoEm`.
+Preenchida pelo Apps Script com `token`, `resposta` (`sim` ou `nao`), `quantidade`, `criadoEm`, `atualizadoEm` e `nomes`.
+
+### Aba `Presentes`
+
+Preenchida pelo Apps Script com `valor` e `criadoEm`.
+
+## PIX
+
+A chave, o QR code (`assets/pix-qrcode.svg`) e o código copia e cola ficam no `index.html`. Ao trocar a chave, gere um novo QR code e um novo código copia e cola com a mesma chave.
 
 ## Configuração inicial
 
