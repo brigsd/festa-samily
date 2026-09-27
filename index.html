@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e97d98" />
+    <meta name="description" content="Aniversário da Samily" />
+    <title>Aniversário da Samily</title>
+    <link rel="preconnect" href="https://script.google.com" />
+    <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin />
+    <script>
+      // Endereço da API (Google Apps Script). Fonte única, usada também pelo app.js.
+      window.FESTA_API = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+      // O app.js só executa depois das folhas de estilo. Disparando a busca aqui,
+      // ela acontece em paralelo com o resto do carregamento da página.
+      window.FESTA_PREFETCH = /^https:/.test(window.FESTA_API)
+        ? { configuracao: fetch(window.FESTA_API + '?action=configuracao').then(function (r) { return r.json(); }).catch(function () { return null; }) }
+        : {};
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Carregada sem bloquear a renderização: as fontes já usam display=swap. -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" /></noscript>
+    <link rel="preload" as="image" href="assets/sprites/ursinha-caminhada-folha.png?v=1" />
+    <link rel="stylesheet" href="style.css?v=1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#evento">Ir para o conteúdo</a>
+    <header class="hero" id="inicio">
+      <div class="sparkles" aria-hidden="true">✦　♡　✧　★　♡　✦　✧</div>
+      <div class="hero-content">
+        <p class="eyebrow">Você é nosso convidado especial</p>
+        <h1>Aniversário<br /><em>da Samily</em></h1>
+        <p class="hero-age" id="hero-age" hidden></p>
+        <p class="hero-copy">Vai ter bolo, brincadeira e muita alegria.<br />Venha comemorar com a gente!</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#presenca">Confirmar presença</a>
+          <a class="button button-outline" href="#evento">Ver informações</a>
+        </div>
+      </div>
+      <div class="balloon balloon-one" aria-hidden="true"></div>
+      <div class="balloon balloon-two" aria-hidden="true"></div>
+      <div class="balloon balloon-three" aria-hidden="true"></div>
+    </header>
+
+    <main>
+      <section class="welcome section-narrow">
+        <h2>Olá, família e amigos!</h2>
+        <p>Preparamos este cantinho com carinho para convidar vocês para a festinha da Samily. Aqui vocês encontram as informações do encontro e podem confirmar presença.</p>
+      </section>
+
+      <section class="section card-section" id="evento">
+        <div class="section-heading">
+          <p class="eyebrow">Guarde esta data</p>
+          <h2>Informações da festa</h2>
+        </div>
+        <div class="event-grid">
+          <article class="event-item">
+            <span class="event-icon" aria-hidden="true">◷</span>
+            <div><p class="event-label">Data e horário</p><strong id="event-date">Carregando...</strong></div>
+          </article>
+          <article class="event-item">
+            <span class="event-icon" aria-hidden="true">⌖</span>
+            <div><p class="event-label">Local</p><strong id="event-address">Carregando...</strong></div>
+          </article>
+          <article class="event-item event-observation">
+            <span class="event-icon" aria-hidden="true">i</span>
+            <div><p class="event-label">Observações</p><span id="event-note">Carregando...</span></div>
+          </article>
+        </div>
+        <div class="event-actions">
+          <button class="button button-soft" id="copy-address" type="button">Copiar endereço</button>
+          <a class="button button-soft" id="google-calendar" href="#" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
+        </div>
+      </section>
+
+      <section class="section card-section" id="presenca">
+        <div class="section-heading">
+          <p class="eyebrow">Vamos nos encontrar?</p>
+          <h2>Confirmar presença</h2>
+          <p>Não precisamos de nome, telefone ou e-mail.</p>
+        </div>
+        <form class="rsvp-form" id="rsvp-form">
+          <fieldset>
+            <legend>Você poderá ir?</legend>
+            <label class="choice"><input type="radio" name="resposta" value="sim" required /> <span>Sim, vou à festa</span></label>
+            <label class="choice"><input type="radio" name="resposta" value="nao" /> <span>Não vou conseguir ir</span></label>
+          </fieldset>
+          <label class="party-size" id="party-size-label">Quantas pessoas irão, contando você?
+            <input id="party-size" name="quantidade" type="number" min="1" max="20" value="1" inputmode="numeric" />
+          </label>
+          <button class="button button-primary" id="rsvp-submit" type="submit">Enviar resposta</button>
+          <p class="form-message" id="rsvp-message" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>Feito com carinho para a festinha da Samily ♡</footer>
+    <div class="celebration" id="celebration" aria-hidden="true"></div>
+    <button class="scroll-teddy" id="scroll-teddy" type="button" aria-label="Soltar um coração ou uma estrela"></button>
+    <script src="app.js?v=1"></script>
+  </body>
+</html>
