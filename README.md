@@ -1,5 +1,7 @@
 # 15 anos da Samily
 
+[![Acessar](https://img.shields.io/badge/Acessar-E97D98?style=for-the-badge&logo=githubpages&logoColor=white)](https://brigsd.github.io/festa-samily/)
+
 Convite digital para a festa de 15 anos da Samily, com confirmação de presença sem criar conta ou fazer login.
 
 ## Como funciona
