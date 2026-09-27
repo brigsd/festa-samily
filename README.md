@@ -1,6 +1,6 @@
-# Aniversário da Samily
+# 15 anos da Samily
 
-Convite digital para a festinha de aniversário da Samily, com confirmação de presença sem criar conta ou fazer login.
+Convite digital para a festa de 15 anos da Samily, com confirmação de presença sem criar conta ou fazer login.
 
 ## Como funciona
 
@@ -39,7 +39,6 @@ Tem as colunas `chave` e `valor`, uma informação por linha:
 | `data` | Data e horário da festa (célula no formato de data). |
 | `endereco` | Local exibido no convite e usado no botão de copiar e no Google Agenda. |
 | `observacoes` | Texto livre para os convidados. |
-| `idade` | Opcional. Quando preenchida, aparece no topo do convite. |
 
 ### Aba `Confirmacoes`
 
