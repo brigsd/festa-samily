@@ -22,7 +22,7 @@
     <!-- Carregada sem bloquear a renderização: as fontes já usam display=swap. -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" /></noscript>
-    <link rel="stylesheet" href="style.css?v=5" />
+    <link rel="stylesheet" href="style.css?v=6" />
   </head>
   <body>
     <a class="skip-link" href="#evento">Ir para o conteúdo</a>
@@ -89,13 +89,9 @@
             <label class="choice"><input type="radio" name="resposta" value="sim" required /> <span>Sim, vou à festa</span></label>
             <label class="choice"><input type="radio" name="resposta" value="nao" /> <span>Não vou conseguir ir</span></label>
           </fieldset>
-          <label class="party-size" id="party-size-label">Quantas pessoas irão, contando você?
-            <input id="party-size" name="quantidade" type="number" min="1" max="20" value="1" inputmode="numeric" />
+          <label class="party-size" id="name-label">Seu nome
+            <input id="guest-name" name="nome" type="text" maxlength="80" autocomplete="name" required />
           </label>
-          <fieldset class="party-names" id="party-names">
-            <legend>Nome de cada pessoa</legend>
-            <div class="party-names-list" id="party-names-list"></div>
-          </fieldset>
           <button class="button button-primary" id="rsvp-submit" type="submit">Enviar resposta</button>
           <p class="form-message" id="rsvp-message" aria-live="polite"></p>
         </form>
@@ -129,6 +125,6 @@
 
     <footer>Feito com carinho para os 15 anos da Samily ♡</footer>
     <div class="celebration" id="celebration" aria-hidden="true"></div>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
   </body>
 </html>

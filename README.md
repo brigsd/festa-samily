@@ -20,7 +20,7 @@ O endereço da API fica configurado em `index.html`, no bloco `<script>` do `<he
 
 O convidado abre o link do convite e pode:
 
-- confirmar ou recusar presença, informando a quantidade de pessoas e o nome de cada uma;
+- confirmar ou recusar presença, informando o próprio nome;
 - presentear via PIX (QR code, chave ou copia e cola) e informar o valor enviado.
 
 Não há login. Depois de responder, o site guarda um token no navegador do convidado. Esse token permite atualizar a resposta pelo mesmo navegador, sem expor a edição da planilha.
@@ -49,7 +49,7 @@ Tem as colunas `chave` e `valor`, uma informação por linha:
 
 ### Aba `Confirmacoes`
 
-Preenchida pelo Apps Script com `token`, `resposta` (`sim` ou `nao`), `quantidade`, `criadoEm`, `atualizadoEm` e `nomes`.
+Preenchida pelo Apps Script com `token`, `resposta` (`sim` ou `nao`), `quantidade`, `criadoEm`, `atualizadoEm` e `nomes`. Cada convidado responde por si, então `quantidade` fica sempre em 1 para quem vai.
 
 ### Aba `Presentes`
 

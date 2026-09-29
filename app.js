@@ -133,50 +133,25 @@ async function loadEvent({ quiet = false } = {}) {
   }
 }
 
-const MAX_PESSOAS = 20;
-
-// Mostra um campo de nome para cada pessoa, preservando o que já foi digitado.
-function renderNameFields() {
-  const lista = $('#party-names-list');
-  const digitados = [...lista.querySelectorAll('input')].map((input) => input.value);
-  const total = Math.min(MAX_PESSOAS, Math.max(1, Math.floor(Number($('#party-size').value) || 1)));
-  lista.innerHTML = '';
-  for (let index = 0; index < total; index += 1) {
-    const label = document.createElement('label');
-    label.textContent = index === 0 ? 'Seu nome' : `Pessoa ${index + 1}`;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.name = 'nomes';
-    input.maxLength = 80;
-    input.autocomplete = index === 0 ? 'name' : 'off';
-    input.required = true;
-    input.value = digitados[index] || '';
-    label.appendChild(input);
-    lista.appendChild(label);
-  }
-}
-
 function toggleAttendance() {
   const vai = document.querySelector('input[name="resposta"]:checked')?.value !== 'nao';
-  $('#party-size-label').hidden = !vai;
-  $('#party-names').hidden = !vai;
-  $('#party-names').disabled = !vai;
+  $('#name-label').hidden = !vai;
+  $('#guest-name').disabled = !vai;
 }
 
 document.querySelectorAll('input[name="resposta"]').forEach((input) => input.addEventListener('change', toggleAttendance));
-$('#party-size').addEventListener('input', renderNameFields);
-renderNameFields();
 
 $('#rsvp-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const resposta = form.get('resposta');
-  const nomes = resposta === 'sim' ? form.getAll('nomes').map((nome) => String(nome).trim()) : [];
+  const nome = String(form.get('nome') || '').trim();
+  const nomes = resposta === 'sim' ? [nome] : [];
   const quantidade = nomes.length;
   const message = $('#rsvp-message');
   const button = $('#rsvp-submit');
-  if (nomes.some((nome) => !nome)) {
-    message.textContent = 'Informe o nome de cada pessoa.';
+  if (resposta === 'sim' && !nome) {
+    message.textContent = 'Informe o seu nome.';
     return;
   }
   message.textContent = 'Enviando...';
